@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { AtpAgent } from '@atproto/api'
-import Login from './components/Login'
-import Actions from './components/Actions'
+import Login from './components/auth/Login'
+import Actions from './components/common/Actions'
 import './styles/App.css'
 
 const SESSION_KEY = 'atproto_session';

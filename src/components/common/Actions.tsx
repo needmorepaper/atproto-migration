@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { AtpAgent } from '@atproto/api';
 import { useNavigate } from 'react-router-dom';
-import Footer from './Footer';
-import '../styles/App.css';
+import Footer from '../layout/Footer';
+import '../../styles/App.css';
 
 interface ActionsProps {
   agent: AtpAgent;
@@ -123,13 +123,13 @@ export default function Actions({ agent, onLogout }: ActionsProps) {
               <h2>Account Details</h2>
               <dl>
                 <dt>Handle</dt>
-                <dd>{agent.session?.handle}</dd>
+                <dd>{agent.session?.handle || 'N/A'}</dd>
                 
                 <dt>PDS Host</dt>
-                <dd>{agent.service.toString()}</dd>
+                <dd>{agent.serviceUrl.toString() || 'N/A'}</dd>
                 
                 <dt>DID</dt>
-                <dd>{agent.session?.did}</dd>
+                <dd>{agent.session?.did || 'N/A'}</dd>
               </dl>
             </section>
             
