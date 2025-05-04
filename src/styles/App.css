@@ -421,4 +421,28 @@ body {
 
 .footer-link strong {
   font-weight: 600;
+}
+
+.loading-message {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: var(--bg-color);
+  border-radius: 4px;
+  color: var(--text-color);
+  font-size: 0.9em;
+  text-align: center;
+}
+
+.form-input:disabled {
+  background-color: var(--bg-color);
+  border-color: var(--border-color);
+  color: var(--text-light);
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.submit-button:disabled {
+  background-color: var(--text-light);
+  cursor: not-allowed;
+  opacity: 0.8;
 } 

@@ -16,11 +16,14 @@ interface DidDocument {
   }>;
 }
 
+type LoginStep = 'idle' | 'resolving-handle' | 'resolving-did' | 'connecting-pds' | 'authenticating' | 'success';
+
 export default function Login({ onLogin }: LoginProps) {
   const [handle, setHandle] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [appPasswordAttempts, setAppPasswordAttempts] = useState(0);
+  const [loginStep, setLoginStep] = useState<LoginStep>('idle');
   const navigate = useNavigate();
 
   const isAppPassword = (password: string) => {
@@ -28,31 +31,69 @@ export default function Login({ onLogin }: LoginProps) {
     return /^[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}$/.test(password);
   };
 
+  const getStepMessage = (step: LoginStep) => {
+    switch (step) {
+      case 'resolving-handle':
+        return 'Resolving your handle...';
+      case 'resolving-did':
+        return 'Resolving your DID...';
+      case 'connecting-pds':
+        return 'Connecting to your Personal Data Server...';
+      case 'authenticating':
+        return 'Authenticating your credentials...';
+      case 'success':
+        return 'Login successful! Redirecting...';
+      default:
+        return '';
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setLoginStep('resolving-handle');
 
+    // app password check and debug method
     if (isAppPassword(password)) {
       if (appPasswordAttempts < 3) {
         setAppPasswordAttempts(appPasswordAttempts + 1);
-        setError(`Warning: You have entered an app password, which does not allow you to migrate your account.`);
+        setError(`You have entered an app password, which does not allow for you to migrate your account. Please enter your main account password instead.`);
+        setLoginStep('idle');
         return;
       }
     }
 
     setHandle(handle.trim());
-    setPassword(password.trim());
 
     try {
       // Create temporary agent to resolve DID
-      const tempAgent = new AtpAgent({ service: 'https://bsky.social' });
+      const tempAgent = new AtpAgent({ service: 'https://public.api.bsky.app' });
 
       // Get DID document from handle
+      setLoginStep('resolving-handle');
       const didResponse = await tempAgent.com.atproto.identity.resolveHandle({
         handle: handle
       });
 
+      if (!didResponse.success) {
+        // Try did:web resolution first
+        const domain = handle.split('.').join(':');
+        const webDid = `did:web:${domain}`;
+        try {
+          const webResponse = await fetch(`https://${handle}/.well-known/did.json`);
+          if (webResponse.ok) {
+            // If successful, continue with the did:web
+            didResponse.data.did = webDid;
+          } else {
+            throw new Error('Invalid handle');
+          }
+        } catch {
+          throw new Error('Invalid handle');
+        }
+      }
+
       // Get PDS endpoint from DID document
+      setLoginStep('resolving-did');
       let didDocResponse;
       const did = didResponse.data.did;
 
@@ -72,14 +113,20 @@ export default function Login({ onLogin }: LoginProps) {
         });
       }
 
+      setLoginStep('connecting-pds');
       const pds = ((didDocResponse.data as unknown) as DidDocument).service.find((s) => s.id === '#atproto_pds')?.serviceEndpoint || 'https://bsky.social';
 
       const agent = new AtpAgent({ service: pds });
+      
+      setLoginStep('authenticating');
       await agent.login({ identifier: handle, password });
+      
+      setLoginStep('success');
       onLogin(agent);
       navigate('/actions');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed');
+      setLoginStep('idle');
     }
   };
 
@@ -101,6 +148,7 @@ export default function Login({ onLogin }: LoginProps) {
                 placeholder="Handle (e.g., example.bsky.social)"
                 value={handle}
                 onChange={(e) => setHandle(e.target.value)}
+                disabled={loginStep !== 'idle'}
               />
             </div>
             <div className="form-group">
@@ -111,13 +159,23 @@ export default function Login({ onLogin }: LoginProps) {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                disabled={loginStep !== 'idle'}
               />
             </div>
 
             {error && <div className="error-message">{error}</div>}
+            {loginStep !== 'idle' && (
+              <div className="loading-message">
+                {getStepMessage(loginStep)}
+              </div>
+            )}
 
-            <button type="submit" className="submit-button">
-              Sign in
+            <button 
+              type="submit" 
+              className="submit-button"
+              disabled={loginStep !== 'idle'}
+            >
+              {loginStep === 'idle' ? 'Sign in' : 'Signing in...'}
             </button>
           </form>
         </div>
