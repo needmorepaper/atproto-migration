@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { AtpAgent } from '@atproto/api';
 import { useNavigate } from 'react-router-dom';
+import Footer from './Footer';
 import '../styles/App.css';
 
 interface ActionsProps {
@@ -27,7 +28,7 @@ export default function Actions({ agent, onLogout }: ActionsProps) {
         }
 
         let didDocResponse;
-        
+
         if (did.startsWith('did:plc:')) {
           // For PLC DIDs, resolve from plc.directory
           const response = await fetch(`https://plc.directory/${did}`);
@@ -62,37 +63,40 @@ export default function Actions({ agent, onLogout }: ActionsProps) {
   }
 
   return (
-    <div className="actions-container">
-      <div className="actions-card">
-        <div className="actions-header">
-          <h1 className="actions-title">User Information</h1>
-          <button className="logout-button" onClick={handleLogout}>
-            Logout
-          </button>
-        </div>
-        
-        <div className="info-section">
-          <div className="info-label">Handle</div>
-          <div className="info-value">{agent.session?.handle}</div>
-        </div>
-        
-        <div className="info-section">
-          <div className="info-label">PDS Host</div>
-          <div className="info-value">{agent.service.toString()}</div>
-        </div>
-        
-        <div className="info-section">
-          <div className="info-label">DID</div>
-          <div className="info-value">{agent.session?.did}</div>
-        </div>
-        
-        <div className="info-section">
-          <div className="info-label">DID Document</div>
-          <pre className="did-document">
-            <code>{didDoc}</code>
-          </pre>
+    <div>
+      <div className="actions-container">
+        <div className="actions-card">
+          <div className="actions-header">
+            <h1 className="actions-title">User Information</h1>
+            <button className="logout-button" onClick={handleLogout}>
+              Logout
+            </button>
+          </div>
+
+          <div className="info-section">
+            <div className="info-label">Handle</div>
+            <div className="info-value">{agent.session?.handle}</div>
+          </div>
+
+          <div className="info-section">
+            <div className="info-label">PDS Host</div>
+            <div className="info-value">{agent.service.toString()}</div>
+          </div>
+
+          <div className="info-section">
+            <div className="info-label">DID</div>
+            <div className="info-value">{agent.session?.did}</div>
+          </div>
+
+          <div className="info-section">
+            <div className="info-label">DID Document</div>
+            <pre className="did-document">
+              <code>{didDoc}</code>
+            </pre>
+          </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 } 
