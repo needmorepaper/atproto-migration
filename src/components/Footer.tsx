@@ -12,7 +12,15 @@ export default function Footer() {
       >
         <strong>@noob.quest</strong>
       </a>{' '}
-      with hate 💔
+      with hate 💔 | 
+      <a
+        href="https://tangled.sh/@noob.quest/atproto-migrator/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="footer-link"
+      >
+        <strong> source code</strong>
+      </a>
     </footer>
   );
 } 
