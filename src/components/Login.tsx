@@ -40,6 +40,9 @@ export default function Login({ onLogin }: LoginProps) {
       }
     }
 
+    setHandle(handle.trim());
+    setPassword(password.trim());
+
     try {
       // Create temporary agent to resolve DID
       const tempAgent = new AtpAgent({ service: 'https://bsky.social' });
@@ -82,6 +85,7 @@ export default function Login({ onLogin }: LoginProps) {
 
   return (
     <div>
+      <h1 className="login-title">ATproto Migrator</h1>
       <div className="login-container">
         <div className="login-card">
           <h2 className="login-title">Sign in to your account</h2>
