@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { AtpAgent } from '@atproto/api';
 import Footer from '../layout/Footer';
 import Header from '../layout/Header';
