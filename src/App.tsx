@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { AtpAgent } from '@atproto/api'
+import { AvatarProvider } from './contexts/AvatarContext'
 import Login from './components/auth/Login'
 import Actions from './components/common/Actions'
+import Migration from './components/common/Migration'
+import RecoveryKey from './components/common/RecoveryKey'
 import './styles/App.css'
 
 const SESSION_KEY = 'atproto_session';
@@ -49,30 +52,52 @@ function App() {
   };
 
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            agent ? (
-              <Navigate to="/actions" replace />
-            ) : (
-              <Login onLogin={handleLogin} />
-            )
-          }
-        />
-        <Route
-          path="/actions"
-          element={
-            agent ? (
-              <Actions agent={agent} onLogout={handleLogout} />
-            ) : (
-              <Navigate to="/" replace />
-            )
-          }
-        />
-      </Routes>
-    </Router>
+    <AvatarProvider>
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              agent ? (
+                <Navigate to="/actions" replace />
+              ) : (
+                <Login onLogin={handleLogin} />
+              )
+            }
+          />
+          <Route
+            path="/actions"
+            element={
+              agent ? (
+                <Actions agent={agent} onLogout={handleLogout} />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+          <Route
+            path="/migration"
+            element={
+              agent ? (
+                <Migration agent={agent} onLogout={handleLogout} />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+          <Route
+            path="/recovery-key"
+            element={
+              agent ? (
+                <RecoveryKey agent={agent} onLogout={handleLogout} />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+        </Routes>
+      </Router>
+    </AvatarProvider>
   )
 }
 

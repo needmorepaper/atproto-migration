@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { AtpAgent } from '@atproto/api';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../layout/Footer';
+import Header from '../layout/Header';
 import '../../styles/App.css';
 
 interface ActionsProps {
@@ -12,7 +13,6 @@ interface ActionsProps {
 export default function Actions({ agent, onLogout }: ActionsProps) {
   const [didDoc, setDidDoc] = useState<string>('');
   const [loading, setLoading] = useState(true);
-  const [avatarUrl, setAvatarUrl] = useState<string>('');
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -26,12 +26,6 @@ export default function Actions({ agent, onLogout }: ActionsProps) {
         const did = agent.session?.did;
         if (!did) {
           throw new Error('No DID found in session');
-        }
-
-        // Fetch profile using authenticated agent
-        const profile = await agent.getProfile({ actor: agent.session?.handle || '' });
-        if (profile.data.avatar) {
-          setAvatarUrl(profile.data.avatar);
         }
 
         let didDocResponse;
@@ -51,7 +45,7 @@ export default function Actions({ agent, onLogout }: ActionsProps) {
 
         setDidDoc(JSON.stringify(didDocResponse, null, 2));
       } catch (err) {
-        console.error('Error fetching profile or DID document:', err);
+        console.error('Error fetching DID document:', err);
         setDidDoc(`Error fetching DID document: ${err instanceof Error ? err.message : 'Unknown error'}`);
       } finally {
         setLoading(false);
@@ -71,26 +65,14 @@ export default function Actions({ agent, onLogout }: ActionsProps) {
 
   return (
     <div className="actions-page">
-      <header className="app-header">
-        <h1 className="app-title">ATproto Migrator</h1>
-        <div className="user-info">
-          {avatarUrl && (
-            <img
-              src={avatarUrl}
-              alt="Profile"
-              className="user-avatar"
-            />
-          )}
-          <span className="user-handle">{agent.session?.handle}</span>
-          <button className="logout-button" onClick={handleLogout}>
-            Logout
-          </button>
-        </div>
-      </header>
+      <Header agent={agent} onLogout={handleLogout} />
 
       <div className="actions-container">
         <div className="actions-list">
-          <div className="action-item">
+          <button 
+            className="action-item"
+            onClick={() => navigate('/migration')}
+          >
             <div className="action-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
@@ -98,11 +80,14 @@ export default function Actions({ agent, onLogout }: ActionsProps) {
             </div>
             <div className="action-content">
               <div className="action-title">Migrate account</div>
-              <div className="action-subtitle">Move your account to a new host</div>
+              <div className="action-subtitle">Move your account to a new data server</div>
             </div>
-          </div>
+          </button>
 
-          <div className="action-item">
+          <button 
+            className="action-item"
+            onClick={() => navigate('/recovery-key')}
+          >
             <div className="action-icon">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
@@ -111,9 +96,9 @@ export default function Actions({ agent, onLogout }: ActionsProps) {
             </div>
             <div className="action-content">
               <div className="action-title">Add recovery key</div>
-              <div className="action-subtitle">Create a new recovery method for your account</div>
+              <div className="action-subtitle">Create a new recovery key for your account</div>
             </div>
-          </div>
+          </button>
         </div>
 
         <details className="user-info-section">
