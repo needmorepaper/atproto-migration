@@ -45,12 +45,20 @@ export default function RecoveryKey({ agent, onLogout }: RecoveryKeyProps) {
             </ul>
           </div>
 
-          <button 
-            className="back-button"
-            onClick={() => navigate('/actions')}
-          >
-            ← Go back
-          </button>
+          <div className="button-container">
+            <button 
+              className="back-button"
+              onClick={() => navigate('/actions')}
+            >
+              ← Go back
+            </button>
+            <button 
+              className="continue-button"
+              onClick={() => navigate('/recovery-key/process')}
+            >
+              Continue →
+            </button>
+          </div>
         </div>
       </div>
       <Footer />

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface AvatarContextType {
   avatarUrl: string;
@@ -10,10 +10,26 @@ const AvatarContext = createContext<AvatarContextType | undefined>(undefined);
 export function AvatarProvider({ children }: { children: ReactNode }) {
   const [avatarUrl, setAvatarUrl] = useState<string>('');
 
+  useEffect(() => {
+    const handleClearAvatar = () => {
+      setAvatarUrl('');
+    };
+
+    const contextElement = document.querySelector('[data-avatar-context]');
+    if (contextElement) {
+      contextElement.addEventListener('clearAvatar', handleClearAvatar);
+      return () => {
+        contextElement.removeEventListener('clearAvatar', handleClearAvatar);
+      };
+    }
+  }, []);
+
   return (
-    <AvatarContext.Provider value={{ avatarUrl, setAvatarUrl }}>
-      {children}
-    </AvatarContext.Provider>
+    <div data-avatar-context>
+      <AvatarContext.Provider value={{ avatarUrl, setAvatarUrl }}>
+        {children}
+      </AvatarContext.Provider>
+    </div>
   );
 }
 

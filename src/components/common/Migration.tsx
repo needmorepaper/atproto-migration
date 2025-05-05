@@ -50,12 +50,20 @@ export default function Migration({ agent, onLogout }: MigrationProps) {
             </ul>
           </div>
 
-          <button
-            className="back-button"
-            onClick={() => navigate('/actions')}
-          >
-            ← Go back
-          </button>
+          <div className="button-container">
+            <button
+              className="back-button"
+              onClick={() => navigate('/actions')}
+            >
+              ← Go back
+            </button>
+            <button
+              className="continue-button"
+              onClick={() => navigate('/migration/process')}
+            >
+              Continue →
+            </button>
+          </div>
         </div>
       </div>
       <Footer />

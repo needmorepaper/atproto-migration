@@ -107,14 +107,12 @@ export default function Actions({ agent, onLogout }: ActionsProps) {
             <section>
               <h2>Account Details</h2>
               <dl>
-                <dt>Handle</dt>
-                <dd>{agent.session?.handle || 'N/A'}</dd>
-                
-                <dt>PDS Host</dt>
-                <dd>{agent.serviceUrl.toString() || 'N/A'}</dd>
-                
                 <dt>DID</dt>
                 <dd>{agent.session?.did || 'N/A'}</dd>
+                <dt>Handle</dt>
+                <dd>@{agent.session?.handle || 'N/A'}</dd>
+                <dt>PDS</dt>
+                <dd>{agent.serviceUrl.toString() || 'N/A'}</dd>
               </dl>
             </section>
             

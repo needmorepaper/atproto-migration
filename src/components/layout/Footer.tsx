@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="footer">
       Made by{' '}
       <a
-        href="https://bsky.app/profile/noob.quest"
+        href="https://bsky.app/profile/did:plc:5szlrh3xkfxxsuu4mo6oe6h7"
         target="_blank"
         rel="noopener noreferrer"
         className="footer-link"

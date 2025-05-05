@@ -40,7 +40,7 @@ export default function Header({ agent, onLogout }: HeaderProps) {
             className="user-avatar"
           />
         )}
-        <span className="user-handle">{agent.session?.handle}</span>
+        <span className="user-handle" title={agent.session?.handle}>{agent.session?.handle}</span>
         <button className="logout-button" onClick={onLogout}>
           Logout
         </button>
