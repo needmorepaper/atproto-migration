@@ -16,7 +16,6 @@ export default function RecoveryKeyProcess({ agent, onLogout }: RecoveryKeyProce
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
-      e.returnValue = '';
       return '';
     };
 
@@ -35,7 +34,9 @@ export default function RecoveryKeyProcess({ agent, onLogout }: RecoveryKeyProce
         <div className="page-content">
           <h2>Add Recovery Key</h2>
           <p>This page will guide you through the process of adding a recovery key to your account.</p>
-
+          <div className="warning-section">
+            <h3>This is not implemented yet!</h3>
+          </div>
           <div className="button-container">
             <button 
               className="back-button"

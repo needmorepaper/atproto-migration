@@ -1,5 +1,4 @@
 import React from 'react';
-import confetti from 'canvas-confetti';
 import { VerificationState, VERIFICATION_STEPS } from '../../types/migration';
 
 interface VerificationUIProps {
