@@ -735,4 +735,167 @@ body {
 .info-message::before {
   content: "ℹ️";
   font-size: 1rem;
+}
+
+/* Migration progress styles */
+.migration-progress {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background-color: var(--white);
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.migration-progress h3 {
+  margin: 0 0 1rem 0;
+  color: var(--text-color);
+}
+
+.progress-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.progress-step {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background-color: var(--bg-color);
+  transition: background-color 0.2s;
+}
+
+.progress-step.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.step-number {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white);
+  border-radius: 50%;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+.progress-step.active .step-number {
+  background-color: var(--white);
+  color: var(--primary-color);
+}
+
+.step-text {
+  font-size: 0.875rem;
+}
+
+@media (max-width: 480px) {
+  .migration-progress {
+    padding: 1rem;
+  }
+
+  .progress-step {
+    padding: 0.5rem;
+  }
+
+  .step-number {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.875rem;
+  }
+}
+
+.plc-token-section {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 15px 0;
+}
+
+.token-request-container {
+  text-align: center;
+}
+
+.token-request-container p {
+  margin-bottom: 15px;
+  color: #666;
+}
+
+.token-input-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.token-input-container p {
+  margin-bottom: 10px;
+  color: #666;
+}
+
+.token-input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.token-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.request-token-button,
+.submit-token-button,
+.request-new-token-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.request-token-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.request-token-button:hover {
+  background-color: #0056b3;
+}
+
+.submit-token-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.submit-token-button:hover {
+  background-color: #218838;
+}
+
+.submit-token-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.request-new-token-button {
+  background-color: transparent;
+  color: #007bff;
+  border: 1px solid #007bff;
+  width: 100%;
+}
+
+.request-new-token-button:hover:not(:disabled) {
+  background-color: #f0f7ff;
+}
+
+.request-new-token-button:disabled {
+  color: #6c757d;
+  border-color: #6c757d;
+  cursor: not-allowed;
 } 

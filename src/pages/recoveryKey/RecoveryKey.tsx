@@ -1,8 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { AtpAgent } from '@atproto/api';
-import Footer from '../layout/Footer';
-import Header from '../layout/Header';
-import '../../styles/App.css';
+import Footer from '../../components/common/Footer';
+import Header from '../../components/common/Header';
 
 interface RecoveryKeyProps {
   agent: AtpAgent;
@@ -22,14 +21,14 @@ export default function RecoveryKey({ agent, onLogout }: RecoveryKeyProps) {
           <p>A recovery key (known as a <b>rotation key</b> in the AT Protocol) is a cryptographic key associated with your account that allows you to modify your account's core identity.</p>
           
           <h3>How rotation keys work</h3>
-          <p>In the AT Protocol, your account is identified using a DID (<b>Decentralized Identifier</b>), with most accounts on the protocol using a variant of it developed specifically for the protocol. The account's core information (such as your handle and data server on the network) is stored in the account's DID document.</p>
-          <p>To change this document, you use a rotation key to confirm that you are the owner of the account and that you are authorized to make the changes. For example, when changing your handle, your data server (also known as a PDS) will use its own rotation key to change it without asking you to manually sign the operation.</p>
+          <p>In the AT Protocol, your account is identified using a DID (<b>Decentralized Identifier</b>), with most accounts on the protocol using a variant of it developed specifically for the protocol named PLC. The account's core information (such as your handle and data server on the network) is stored in the account's DID document.</p>
+          <p>To change this document (an event known as a <b>PLC operation</b>), you use a rotation key to confirm that you are the owner of the account and that you are authorized to make the changes. For example, when changing your handle, your data server (also known as a PDS) will use its own rotation key to change the document, allowing the user to change their handle without needing to provide their own key.</p>
           <h3>Why should I add another key?</h3>
           <p>Adding a rotation key allows you to regain control of your account if it is compromised. It also allows you to move your account to a new data server, even if the current server is down.</p>
           <div className="warning-section">
-            <h3>⚠️ Read Before Continuing ⚠️</h3>
+            <h3>⚠️ Read Before You Continue ⚠️</h3>
             <ul>
-              <li>You will need a PLC operation token to add a recovery key. Tokens are sent to the email address associated with your account.</li>
+              <li>You will need a  to add a recovery key. Tokens are sent to the email address associated with your account.</li>
               <li>While we do generate a key for you, we will not store it. Please save it in a secure location.</li>
               <li>Keep your recovery key private. Anyone with access to it could potentially take control of your account.</li>
               <li>If you're using a third-party PDS, it must be able to send emails or you will not be able to use this tool to add a recovery key.</li>

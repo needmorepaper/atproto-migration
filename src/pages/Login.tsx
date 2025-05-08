@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AtpAgent } from '@atproto/api';
-import Footer from '../layout/Footer';
-import '../../styles/App.css';
+import Footer from '../components/common/Footer';
 
 interface LoginProps {
   onLogin: (agent: AtpAgent) => void;

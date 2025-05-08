@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { AtpAgent } from '@atproto/api';
 import { useAvatar } from '../../contexts/AvatarContext';
-import '../../styles/App.css';
 
 interface HeaderProps {
   agent: AtpAgent;
@@ -21,7 +20,8 @@ export default function Header({ agent, onLogout }: HeaderProps) {
             setAvatarUrl(profile.data.avatar);
           }
         } catch (err) {
-          console.error('Error fetching profile:', err);
+          console.error('Error fetching profile avatar:', err);
+          setAvatarUrl('https://placehold.co/400x400');
         }
       }
     };
@@ -40,7 +40,7 @@ export default function Header({ agent, onLogout }: HeaderProps) {
             className="user-avatar"
           />
         )}
-        <span className="user-handle" title={agent.session?.handle}>{agent.session?.handle}</span>
+        <span className="user-handle" title={agent.session?.handle}>@{agent.session?.handle}</span>
         <button className="logout-button" onClick={onLogout}>
           Logout
         </button>
