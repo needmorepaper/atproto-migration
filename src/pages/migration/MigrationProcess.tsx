@@ -21,7 +21,7 @@ import {
     VERIFICATION_STEPS,
     RepoStatus
 } from '../../types/migration';
-
+import { getPdsUrl } from '../../lib/pdsUtils';
 export default function MigrationProcess({ agent, onLogout }: MigrationProcessProps) {
     const navigate = useNavigate();
     const [pds, setPds] = useState('');
@@ -69,15 +69,6 @@ export default function MigrationProcess({ agent, onLogout }: MigrationProcessPr
         localStorage.removeItem('migration_details');
         localStorage.removeItem('migration_progress');
     }, []);
-
-    // Helper function to ensure proper PDS URL format
-    const getPdsUrl = (pdsDomain: string) => {
-        if (!pdsDomain) return '';
-        if (pdsDomain.startsWith('http://') || pdsDomain.startsWith('https://')) {
-            return pdsDomain;
-        }
-        return `https://${pdsDomain}`;
-    };
 
     // Add warning when trying to close or navigate away and clean up expired data
     useEffect(() => {
@@ -225,8 +216,10 @@ export default function MigrationProcess({ agent, onLogout }: MigrationProcessPr
 
     // Validate invite code when it changes
     useEffect(() => {
-        if (pdsInfo?.requiresInvite && inviteCode) {
-            const inviteRegex = /^bsky-noob-quest-[a-zA-Z0-9]{5}-[a-zA-Z0-9]{5}$/;
+        if (pdsInfo?.requiresInvite && inviteCode && pdsInfo.domain) {
+            // Convert domain (e.g. pds.mmatt.net) to regex-safe format (pds-mmatt-net)
+            const domainPrefix = pdsInfo.domain.replace(/\./g, '-');
+            const inviteRegex = new RegExp(`^${domainPrefix}-[a-zA-Z0-9]{5}-[a-zA-Z0-9]{5}$`);
             setIsInviteValid(inviteRegex.test(inviteCode));
         }
     }, [inviteCode, pdsInfo]);
