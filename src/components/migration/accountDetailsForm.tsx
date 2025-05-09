@@ -7,11 +7,18 @@ interface AccountDetailsFormProps {
     pds: string;
     inviteCode: string;
     serverDescription: ServerDescription;
+    newServerDescription: ServerDescription;
     onBack: () => void;
     onSubmit: (handle: string, email: string, password: string) => void;
 }
 
-export default function AccountDetailsForm({ currentHandle, serverDescription, onBack, onSubmit }: AccountDetailsFormProps) {
+export default function AccountDetailsForm({ 
+    currentHandle, 
+    serverDescription, 
+    newServerDescription,
+    onBack, 
+    onSubmit 
+}: AccountDetailsFormProps) {
     const [handle, setHandle] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -22,7 +29,7 @@ export default function AccountDetailsForm({ currentHandle, serverDescription, o
         const availableDomains = serverDescription.getAvailableUserDomains();
         const domainNames = Object.values(availableDomains);
         const { isUsingDefaultDomain, customHandle } = validateHandle(currentHandle, domainNames);
-
+        
         setIsUsingDefaultDomain(isUsingDefaultDomain);
         if (isUsingDefaultDomain && customHandle) {
             setHandle(customHandle);
@@ -34,9 +41,9 @@ export default function AccountDetailsForm({ currentHandle, serverDescription, o
         onSubmit(handle, email, password);
     };
 
-    // Get the first available domain from the server description
-    const availableDomains = serverDescription.getAvailableUserDomains();
-    const firstAvailableDomain = Object.values(availableDomains)[0];
+    // Get the first available domain from the new server description
+    const newAvailableDomains = newServerDescription.getAvailableUserDomains();
+    const newFirstAvailableDomain = Object.values(newAvailableDomains)[0];
 
     return (
         <form onSubmit={handleSubmit}>
@@ -60,7 +67,7 @@ export default function AccountDetailsForm({ currentHandle, serverDescription, o
                                 placeholder="alice"
                                 className="form-input"
                             />
-                            <span className="handle-domain">{firstAvailableDomain}</span>
+                            <span className="handle-domain">{newFirstAvailableDomain}</span>
                         </div>
                     </div>
                 </div>

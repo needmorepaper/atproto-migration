@@ -47,6 +47,27 @@ export default function MigrationProcess({ agent, onLogout }: MigrationProcessPr
         fetchCurrentServerDescription();
     }, [agent.serviceUrl]);
 
+    // Fetch current PDS server description when component mounts
+    useEffect(() => {
+        const fetchCurrentServerDescription = async () => {
+            try {
+                const currentPds = new URL(agent.serviceUrl).hostname;
+                
+                // If the current PDS is a Bluesky network server, use bsky.social's description
+                if (currentPds.endsWith('.bsky.network')) {
+                    const description = await getServerDescription('bsky.social');
+                    setCurrentServerDescription(description);
+                } else {
+                    const description = await getServerDescription(currentPds);
+                    setCurrentServerDescription(description);
+                }
+            } catch (e) {
+                console.error('Failed to fetch current server description:', e);
+            }
+        };
+        fetchCurrentServerDescription();
+    }, [agent.serviceUrl]);
+
     const handlePdsSubmit = (pds: string, inviteCode: string, serverDescription: ServerDescription) => {
         setPdsDetails({ pds, inviteCode, serverDescription });
         setCurrentStep('account');
@@ -88,6 +109,7 @@ export default function MigrationProcess({ agent, onLogout }: MigrationProcessPr
                                 pds={pdsDetails.pds}
                                 inviteCode={pdsDetails.inviteCode}
                                 serverDescription={currentServerDescription}
+                                newServerDescription={pdsDetails.serverDescription}
                                 onSubmit={handleAccountSubmit}
                                 onBack={handleBack}
                             />
