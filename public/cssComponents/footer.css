@@ -1,0 +1,22 @@
+/* Footer styles */
+.footer {
+    text-align: center;
+    padding: 1rem;
+    color: var(--text-light);
+    font-size: 0.875rem;
+    margin: 1rem 0;
+  }
+  
+  .footer-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  
+  .footer-link:hover {
+    color: var(--primary-hover);
+  }
+  
+  .footer-link strong {
+    font-weight: 600;
+  } 

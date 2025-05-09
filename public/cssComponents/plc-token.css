@@ -1,0 +1,91 @@
+/* PLC token section styles */
+.plc-token-section {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 15px 0;
+}
+
+.token-request-container {
+  text-align: center;
+}
+
+.token-request-container p {
+  margin-bottom: 15px;
+  color: #666;
+}
+
+.token-input-container {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.token-input-container p {
+  margin-bottom: 10px;
+  color: #666;
+}
+
+.token-input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.token-input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.request-token-button,
+.submit-token-button,
+.request-new-token-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.request-token-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.request-token-button:hover {
+  background-color: #0056b3;
+}
+
+.submit-token-button {
+  background-color: #28a745;
+  color: white;
+}
+
+.submit-token-button:hover {
+  background-color: #218838;
+}
+
+.submit-token-button:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.request-new-token-button {
+  background-color: transparent;
+  color: #007bff;
+  border: 1px solid #007bff;
+  width: 100%;
+}
+
+.request-new-token-button:hover:not(:disabled) {
+  background-color: #f0f7ff;
+}
+
+.request-new-token-button:disabled {
+  color: #6c757d;
+  border-color: #6c757d;
+  cursor: not-allowed;
+} 

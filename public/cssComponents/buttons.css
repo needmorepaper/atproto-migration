@@ -1,0 +1,76 @@
+/* Button styles */
+.submit-button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--primary-color);
+  color: var(--text-color);
+  border: none;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 1rem;
+}
+
+.submit-button:hover {
+  background-color: var(--primary-hover);
+}
+
+.submit-button:disabled {
+  background-color: var(--text-light);
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.back-button {
+  background-color: var(--text-light);
+  color: var(--white);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.back-button:hover {
+  background-color: #a1a1a1;
+}
+
+@media (prefers-color-scheme: dark) {
+  .back-button:hover {
+    background-color: #c7c7c7;
+  }
+}
+
+.continue-button {
+  background-color: var(--primary-color);
+  color: var(--white);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.continue-button:hover {
+  background-color: var(--primary-hover);
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+} 

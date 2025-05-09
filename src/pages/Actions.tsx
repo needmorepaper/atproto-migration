@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { AtpAgent } from '@atproto/api';
 import { useNavigate } from 'react-router-dom';
-import Footer from '../components/common/Footer';
-import Header from '../components/common/Header';
+import Footer from '../components/common/footer';
+import Header from '../components/common/header';
 
 interface ActionsProps {
   agent: AtpAgent;
