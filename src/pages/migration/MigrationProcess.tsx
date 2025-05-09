@@ -6,6 +6,7 @@ import Footer from '../../components/common/footer';
 import PdsForm from '../../components/migration/pdsForm';
 import AccountDetailsForm from '../../components/migration/accountDetailsForm';
 import { ServerDescription } from '../../lib/migration/serverDescription';
+import { getServerDescription } from '../../lib/migration/pdsValidation';
 
 interface MigrationProcessProps {
     agent: AtpAgent;
@@ -16,6 +17,7 @@ export default function MigrationProcess({ agent, onLogout }: MigrationProcessPr
     const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState<'pds' | 'account'>('pds');
     const [pdsDetails, setPdsDetails] = useState<{ pds: string; inviteCode: string; serverDescription: ServerDescription } | null>(null);
+    const [currentServerDescription, setCurrentServerDescription] = useState<ServerDescription | null>(null);
     const accountSectionRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -23,6 +25,27 @@ export default function MigrationProcess({ agent, onLogout }: MigrationProcessPr
             accountSectionRef.current.scrollIntoView({ behavior: 'smooth' });
         }
     }, [currentStep]);
+
+    // Fetch current PDS server description when component mounts
+    useEffect(() => {
+        const fetchCurrentServerDescription = async () => {
+            try {
+                const currentPds = new URL(agent.serviceUrl).hostname;
+                
+                // If the current PDS is a Bluesky network server, use bsky.social's description
+                if (currentPds.endsWith('.bsky.network')) {
+                    const description = await getServerDescription('bsky.social');
+                    setCurrentServerDescription(description);
+                } else {
+                    const description = await getServerDescription(currentPds);
+                    setCurrentServerDescription(description);
+                }
+            } catch (e) {
+                console.error('Failed to fetch current server description:', e);
+            }
+        };
+        fetchCurrentServerDescription();
+    }, [agent.serviceUrl]);
 
     const handlePdsSubmit = (pds: string, inviteCode: string, serverDescription: ServerDescription) => {
         setPdsDetails({ pds, inviteCode, serverDescription });
@@ -58,13 +81,13 @@ export default function MigrationProcess({ agent, onLogout }: MigrationProcessPr
                         />
                     </div>
 
-                    {currentStep === 'account' && pdsDetails && (
+                    {currentStep === 'account' && pdsDetails && currentServerDescription && (
                         <div className="form-section" ref={accountSectionRef}>
                             <AccountDetailsForm
                                 currentHandle={agent.session?.handle || ''}
                                 pds={pdsDetails.pds}
                                 inviteCode={pdsDetails.inviteCode}
-                                serverDescription={pdsDetails.serverDescription}
+                                serverDescription={currentServerDescription}
                                 onSubmit={handleAccountSubmit}
                                 onBack={handleBack}
                             />
