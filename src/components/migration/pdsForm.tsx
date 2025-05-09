@@ -6,7 +6,7 @@ import { useDebounce } from '../../hooks/useDebounce';
 
 interface PdsFormProps {
     agent: AtpAgent;
-    onSubmit: (pds: string, inviteCode: string) => void;
+    onSubmit: (pds: string, inviteCode: string, serverDescription: ServerDescription) => void;
     onBack: () => void;
 }
 
@@ -142,7 +142,7 @@ export default function PdsForm({ agent, onSubmit, onBack }: PdsFormProps) {
             }
 
             if (!pdsError && !inviteCodeError) {
-                onSubmit(pds, inviteCode);
+                onSubmit(pds, inviteCode, serverDescription!);
             }
         } catch (e) {
             console.error('Error during form submission:', {

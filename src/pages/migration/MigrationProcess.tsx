@@ -5,6 +5,7 @@ import Header from '../../components/common/header';
 import Footer from '../../components/common/footer';
 import PdsForm from '../../components/migration/pdsForm';
 import AccountDetailsForm from '../../components/migration/accountDetailsForm';
+import { ServerDescription } from '../../lib/migration/serverDescription';
 
 interface MigrationProcessProps {
     agent: AtpAgent;
@@ -14,7 +15,7 @@ interface MigrationProcessProps {
 export default function MigrationProcess({ agent, onLogout }: MigrationProcessProps) {
     const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState<'pds' | 'account'>('pds');
-    const [pdsDetails, setPdsDetails] = useState<{ pds: string; inviteCode: string } | null>(null);
+    const [pdsDetails, setPdsDetails] = useState<{ pds: string; inviteCode: string; serverDescription: ServerDescription } | null>(null);
     const accountSectionRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -23,8 +24,8 @@ export default function MigrationProcess({ agent, onLogout }: MigrationProcessPr
         }
     }, [currentStep]);
 
-    const handlePdsSubmit = (pds: string, inviteCode: string) => {
-        setPdsDetails({ pds, inviteCode });
+    const handlePdsSubmit = (pds: string, inviteCode: string, serverDescription: ServerDescription) => {
+        setPdsDetails({ pds, inviteCode, serverDescription });
         setCurrentStep('account');
     };
 
@@ -60,8 +61,10 @@ export default function MigrationProcess({ agent, onLogout }: MigrationProcessPr
                     {currentStep === 'account' && pdsDetails && (
                         <div className="form-section" ref={accountSectionRef}>
                             <AccountDetailsForm
+                                currentHandle={agent.session?.handle || ''}
                                 pds={pdsDetails.pds}
                                 inviteCode={pdsDetails.inviteCode}
+                                serverDescription={pdsDetails.serverDescription}
                                 onSubmit={handleAccountSubmit}
                                 onBack={handleBack}
                             />
