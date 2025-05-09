@@ -5,9 +5,9 @@ import NetworkWarning from './components/common/networkWarning'
 import Login from './pages/login'
 import Actions from './pages/actions'
 import Migration from './pages/migration/migration'
-import MigrationProcess from './pages/migration/migrationProcess'
+import MigrationProcess from './pages/migration/MigrationProcess'
 import RecoveryKey from './pages/recoveryKey/recovery'
-import RecoveryKeyProcess from './pages/recoveryKey/recoveryKeyProgress'
+import RecoveryKeyProcess from './pages/recoveryKey/RecoveryKeyProcess'
 
 export function AppRoutes({ agent, onLogout, handleLogin }: { 
   agent: AtpAgent | null;
