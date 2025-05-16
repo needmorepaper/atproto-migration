@@ -2,10 +2,10 @@ import { StrictMode, useState, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { AtpAgent } from '@atproto/api'
-import { AvatarProvider } from './contexts/avatarContext'
-import { NetworkProvider } from './contexts/networkContext'
-import { AppRoutes } from './routes'
-import '../public/main.css'
+import { AvatarProvider } from './contexts/AvatarContext'
+import { NetworkProvider } from './contexts/NetworkContext'
+import { AppRoutes } from './Routes'
+import './main.css'
 
 const SESSION_KEY = 'atproto_session';
 const SESSION_EXPIRY = 60 * 60 * 1000; // 1 hour in milliseconds

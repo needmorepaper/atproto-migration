@@ -1,4 +1,4 @@
-import { useNetwork } from '../../contexts/NetworkContext';
+import { useNetwork } from '../../contexts/networkContext';
 
 export default function NetworkWarning() {
   const { isOnline } = useNetwork();
