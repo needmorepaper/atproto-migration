@@ -12,32 +12,82 @@ interface AccountDetailsFormProps {
     onSubmit: (handle: string, email: string, password: string) => void;
 }
 
-export default function AccountDetailsForm({ 
-    currentHandle, 
-    serverDescription, 
+export default function AccountDetailsForm({
+    currentHandle,
+    serverDescription,
     newServerDescription,
-    onBack, 
-    onSubmit 
+    onBack,
+    onSubmit
 }: AccountDetailsFormProps) {
     const [handle, setHandle] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isUsingDefaultDomain, setIsUsingDefaultDomain] = useState(false);
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [handleError, setHandleError] = useState('');
 
     useEffect(() => {
         // Check if current handle is using a default domain
         const availableDomains = serverDescription.getAvailableUserDomains();
         const domainNames = Object.values(availableDomains);
         const { isUsingDefaultDomain, customHandle } = validateHandle(currentHandle, domainNames);
-        
+
         setIsUsingDefaultDomain(isUsingDefaultDomain);
-        if (isUsingDefaultDomain && customHandle) {
-            setHandle(customHandle);
+        if (isUsingDefaultDomain) {
+            // Set initial handle value from current handle
+            setHandle(currentHandle.slice(0, currentHandle.indexOf('.')));
+        } else {
+            setHandle(customHandle || 'example');
         }
     }, [currentHandle, serverDescription]);
 
+    const validateEmail = (email: string) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    };
+
+    const validatePassword = (password: string) => {
+        return password.length >= 8;
+    };
+
+    const validateHandleInput = (handle: string) => {
+        if (handle.length < 3) {
+            return 'Handle must be at least 3 characters long';
+        }
+        if (!/^[a-zA-Z0-9-]+$/.test(handle)) {
+            return 'Handle can only contain letters, numbers, and hyphens';
+        }
+        return '';
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        // Reset errors
+        setEmailError('');
+        setPasswordError('');
+        setHandleError('');
+
+        // Validate handle
+        const handleValidationError = validateHandleInput(handle);
+        if (handleValidationError) {
+            setHandleError(handleValidationError);
+            return;
+        }
+
+        // Validate email
+        if (!validateEmail(email)) {
+            setEmailError('Please enter a valid email address');
+            return;
+        }
+
+        // Validate password
+        if (!validatePassword(password)) {
+            setPasswordError('Password must be at least 8 characters long');
+            return;
+        }
+
         onSubmit(handle, email, password);
     };
 
@@ -62,30 +112,36 @@ export default function AccountDetailsForm({
                             <input
                                 type="text"
                                 id="handle"
-                                value={currentHandle.slice(0, currentHandle.indexOf('.'))}
-                                onChange={(e) => setHandle(e.target.value)}
+                                value={handle}
+                                onChange={(e) => {
+                                    setHandle(e.target.value);
+                                    setHandleError('');
+                                }}
                                 placeholder="alice"
-                                className="form-input"
+                                className={`form-input ${handleError ? 'error' : ''}`}
                             />
                             <span className="handle-domain">{newFirstAvailableDomain}</span>
                         </div>
+                        {handleError && <div className="error-message">{handleError}</div>}
                     </div>
                 </div>
             )}
 
-
-
             <div className="form-group">
                 <label htmlFor="email">Email</label>
                 <input
-                    type="email"
+                    type="text"
                     id="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your.email@example.com"
+                    onChange={(e) => {
+                        setEmail(e.target.value);
+                        setEmailError('');
+                    }}
+                    placeholder="popbob@example.com"
                     required
-                    className="form-input"
+                    className={`form-input ${emailError ? 'error' : ''}`}
                 />
+                {emailError && <div className="error-message">{emailError}</div>}
             </div>
 
             <div className="form-group">
@@ -94,13 +150,18 @@ export default function AccountDetailsForm({
                     type="password"
                     id="password"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password"
+                    onChange={(e) => {
+                        setPassword(e.target.value);
+                        setPasswordError('');
+                    }}
+                    placeholder="hunter2"
                     required
-                    className="form-input"
+                    className={`form-input ${passwordError ? 'error' : ''}`}
                 />
+                {passwordError && <div className="error-message">{passwordError}</div>}
             </div>
-
+            <small>We recommend using a new, unique password for your new account.</small>
+            
             <div className="button-container">
                 <button
                     type="button"

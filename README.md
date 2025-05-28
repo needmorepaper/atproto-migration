@@ -1,9 +1,9 @@
 # atproto-migrator
-basic (NON-FUNCTIONAL) web application that allows for an user to migrate their bluesky/at protocol account to another PDS without using command line tools.
+basic (NON-FUNCTIONAL) web application that allows for an user to migrate their bluesky/at protocol account to another PDS without using command line tools, as well as some other repo stuff
 
 [live version available here](https://atproto-migrator.pages.dev)
 
-## install
+## run for developing
 
 ```bash
 npm install
