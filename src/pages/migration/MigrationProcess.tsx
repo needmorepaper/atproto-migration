@@ -114,7 +114,6 @@ export default function MigrationProcess({ agent, onLogout }: MigrationProcessPr
                                 email={accountDetails.email}
                                 password={accountDetails.password}
                                 pds={pdsDetails.pds}
-                                serverDescription={pdsDetails.serverDescription}
                                 currentHandle={agent.session?.handle || ''}
                                 currentPds={new URL(agent.serviceUrl).hostname}
                                 onBack={handleBack}

@@ -1,4 +1,3 @@
-import { ServerDescription } from '../../lib/migration/serverDescription';
 import { useState } from 'react';
 import '../../css/confirmation.css';
 
@@ -7,7 +6,6 @@ interface ConfirmationStepProps {
     email: string;
     password: string;
     pds: string;
-    serverDescription: ServerDescription;
     onBack: () => void;
     onConfirm: () => void;
     currentHandle?: string;
@@ -19,7 +17,6 @@ export default function ConfirmationStep({
     email,
     password,
     pds,
-    serverDescription,
     onBack,
     onConfirm,
     currentHandle = '',
