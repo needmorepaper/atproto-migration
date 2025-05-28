@@ -40,7 +40,7 @@ export default function ConfirmationStep({
 
     return (
         <div>
-            <h3>Check your details!</h3>
+            <h3>Migration summary</h3>
 
             <div className="comparison-container">
                 <div className="comparison-side">
@@ -117,13 +117,13 @@ export default function ConfirmationStep({
             {showWarning && (
                 <div className="warning-overlay">
                     <div className="warning-dialog">
-                        <h3>Last chance to back out!</h3>
+                        <h3>Last chance to turn back!</h3>
                         <div className="warning-content">
                             <p>This tool is currently in beta, as such:</p>
                             <ul>
                                 <li>We do not guarantee that the migration will succeed</li>
-                                <li>While most errors are recoverable, for the moment we cannot help you recover from them and continue</li>
-                                <li>We take no responsibility for any problems that may occur during the process</li>
+                                <li>While most errors are recoverable, for the moment we cannot help you recover from them and it will need to be continued manually using command line tools</li>
+                                <li>We claim no responsibility for any problems that may occur during the process</li>
                             </ul>
                             <p>If you understand the risks and want to proceed, please type your new PDS <b>({pds})</b> below:</p>
                             <div className="pds-verification">

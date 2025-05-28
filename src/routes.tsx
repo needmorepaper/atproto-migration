@@ -5,9 +5,10 @@ import NetworkWarning from './components/common/networkWarning'
 import Login from './pages/login'
 import Actions from './pages/actions'
 import Migration from './pages/migration/migration'
-import MigrationProcess from './pages/migration/migrationProcess'
+import MigrationForms from './pages/migration/migrationForms'
 import RecoveryKey from './pages/recoveryKey/recovery'
 import RecoveryKeyProcess from './pages/recoveryKey/recoveryKeyProcess'
+import ErrorPage from './pages/error'
 
 export function AppRoutes({ agent, onLogout, handleLogin }: { 
   agent: AtpAgent | null;
@@ -69,10 +70,10 @@ export function AppRoutes({ agent, onLogout, handleLogin }: {
           }
         />
         <Route
-          path="/migration/process"
+          path="/migration/registration"
           element={
             agent ? (
-              <MigrationProcess agent={agent} onLogout={onLogout} />
+              <MigrationForms agent={agent} onLogout={onLogout} />
             ) : (
               <Navigate to="/" replace />
             )
@@ -98,6 +99,8 @@ export function AppRoutes({ agent, onLogout, handleLogin }: {
             )
           }
         />
+        {/* Catch-all route for 404s */}
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </>
   );

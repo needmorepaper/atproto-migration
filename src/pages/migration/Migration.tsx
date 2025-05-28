@@ -59,7 +59,7 @@ export default function Migration({ agent, onLogout }: MigrationProps) {
             </button>
             <button
               className="continue-button"
-              onClick={() => navigate('/migration/process')}
+              onClick={() => navigate('/migration/registration')}
             >
               Continue →
             </button>

@@ -108,7 +108,7 @@ export default function AccountDetailsForm({
         
         // Validate all fields and only proceed if all validations pass
         if (validateAllFields()) {
-            onSubmit((handle + newFirstAvailableDomain), email, password);
+            onSubmit(handle, email, password);
         }
     };
 

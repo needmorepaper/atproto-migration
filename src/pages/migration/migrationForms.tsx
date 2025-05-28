@@ -9,12 +9,12 @@ import ConfirmationStep from '../../components/migration/confirmationStep';
 import { ServerDescription } from '../../lib/migration/serverDescription';
 import { getServerDescription } from '../../lib/migration/pdsValidation';
 
-interface MigrationProcessProps {
+interface MigrationFormsProps {
     agent: AtpAgent;
     onLogout: () => void;
 }
 
-export default function MigrationProcess({ agent, onLogout }: MigrationProcessProps) {
+export default function MigrationForms({ agent, onLogout }: MigrationFormsProps) {
     const navigate = useNavigate();
     const [currentStep, setCurrentStep] = useState<'pds' | 'account' | 'confirmation'>('pds');
     const [pdsDetails, setPdsDetails] = useState<{ pds: string; inviteCode: string; serverDescription: ServerDescription } | null>(null);

@@ -86,8 +86,8 @@
 }
 
 .confirm-button {
-    background-color: var(--error-color);
-    color: var(--white);
+    background-color: #c72424;
+    color: var(--text-color);
     border: none;
     padding: 0.75rem 1.5rem;
     border-radius: 0.375rem;
@@ -102,7 +102,7 @@
 }
 
 .confirm-button:hover {
-    background-color: #dc2626;
+    background-color: #f32e2e;
 }
 
 @media (max-width: 707px) {
