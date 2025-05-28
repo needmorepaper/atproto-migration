@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ServerDescription } from '../../lib/migration/serverDescription';
 import { validateHandle } from '../../lib/migration/accountDetailsValidation';
 
@@ -33,6 +33,7 @@ export default function AccountDetailsForm({
         const domainNames = Object.values(availableDomains);
         const { isUsingDefaultDomain, customHandle } = validateHandle(currentHandle, domainNames);
 
+
         setIsUsingDefaultDomain(isUsingDefaultDomain);
         if (isUsingDefaultDomain) {
             // Set initial handle value from current handle
@@ -61,34 +62,44 @@ export default function AccountDetailsForm({
         return '';
     };
 
+    // Debounced validation functions
+    const debouncedValidateHandle = useCallback((value: string) => {
+        const timeoutId = setTimeout(() => {
+            setHandleError(validateHandleInput(value));
+        }, 500);
+        return () => clearTimeout(timeoutId);
+    }, []);
+
+    const debouncedValidateEmail = useCallback((value: string) => {
+        const timeoutId = setTimeout(() => {
+            setEmailError(validateEmail(value) ? '' : 'Please enter a valid email address');
+        }, 500);
+        return () => clearTimeout(timeoutId);
+    }, []);
+
+    const debouncedValidatePassword = useCallback((value: string) => {
+        const timeoutId = setTimeout(() => {
+            setPasswordError(validatePassword(value) ? '' : 'Password must be at least 8 characters long');
+        }, 500);
+        return () => clearTimeout(timeoutId);
+    }, []);
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-
-        // Reset errors
-        setEmailError('');
-        setPasswordError('');
-        setHandleError('');
-
-        // Validate handle
+        
+        // Validate all fields
         const handleValidationError = validateHandleInput(handle);
-        if (handleValidationError) {
-            setHandleError(handleValidationError);
-            return;
+        const emailValidationError = !validateEmail(email) ? 'Please enter a valid email address' : '';
+        const passwordValidationError = !validatePassword(password) ? 'Password must be at least 8 characters long' : '';
+        
+        setHandleError(handleValidationError);
+        setEmailError(emailValidationError);
+        setPasswordError(passwordValidationError);
+        
+        // Only submit if all validations pass
+        if (!handleValidationError && !emailValidationError && !passwordValidationError) {
+            onSubmit(handle, email, password);
         }
-
-        // Validate email
-        if (!validateEmail(email)) {
-            setEmailError('Please enter a valid email address');
-            return;
-        }
-
-        // Validate password
-        if (!validatePassword(password)) {
-            setPasswordError('Password must be at least 8 characters long');
-            return;
-        }
-
-        onSubmit(handle, email, password);
     };
 
     // Get the first available domain from the new server description
@@ -114,14 +125,16 @@ export default function AccountDetailsForm({
                                 id="handle"
                                 value={handle}
                                 onChange={(e) => {
-                                    setHandle(e.target.value);
-                                    setHandleError('');
+                                    const newValue = e.target.value;
+                                    setHandle(newValue);
+                                    debouncedValidateHandle(newValue);
                                 }}
                                 placeholder="alice"
                                 className={`form-input ${handleError ? 'error' : ''}`}
                             />
                             <span className="handle-domain">{newFirstAvailableDomain}</span>
                         </div>
+                        {handleError && <div className="error-message">{handleError}</div>}
                         {handleError && <div className="error-message">{handleError}</div>}
                     </div>
                 </div>
@@ -134,8 +147,9 @@ export default function AccountDetailsForm({
                     id="email"
                     value={email}
                     onChange={(e) => {
-                        setEmail(e.target.value);
-                        setEmailError('');
+                        const newValue = e.target.value;
+                        setEmail(newValue);
+                        debouncedValidateEmail(newValue);
                     }}
                     placeholder="popbob@example.com"
                     required
@@ -151,8 +165,9 @@ export default function AccountDetailsForm({
                     id="password"
                     value={password}
                     onChange={(e) => {
-                        setPassword(e.target.value);
-                        setPasswordError('');
+                        const newValue = e.target.value;
+                        setPassword(newValue);
+                        debouncedValidatePassword(newValue);
                     }}
                     placeholder="hunter2"
                     required
@@ -161,7 +176,7 @@ export default function AccountDetailsForm({
                 {passwordError && <div className="error-message">{passwordError}</div>}
             </div>
             <small>We recommend using a new, unique password for your new account.</small>
-            
+                        
             <div className="button-container">
                 <button
                     type="button"
