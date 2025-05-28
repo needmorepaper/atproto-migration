@@ -1,6 +1,6 @@
 export const validateHandle = (handle: string, availableUserDomains: string[]): { 
     isUsingDefaultDomain: boolean;
-    customHandle: string | null;
+    customHandle: string;
   } => {
     // Check if handle ends with any of the available user domains
     const isUsingDefaultDomain = availableUserDomains.some(domain => 
@@ -10,15 +10,15 @@ export const validateHandle = (handle: string, availableUserDomains: string[]): 
     if (!isUsingDefaultDomain) {
       return {
         isUsingDefaultDomain: false,
-        customHandle: null
+        customHandle: handle
       };
     }
   
     // Extract the custom part of the handle (everything before the domain)
-    const customHandle = handle.split('.').slice(0, -1).join('.');
+    const customHandle = handle.split('.')[0];
     
     return {
       isUsingDefaultDomain: true,
-      customHandle
+      customHandle: customHandle
     };
   };

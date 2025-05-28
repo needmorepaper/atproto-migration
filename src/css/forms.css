@@ -88,3 +88,7 @@
   margin-top: 0;
   margin-bottom: 0.5rem;
 } 
+
+.info-message strong {
+  word-break: break-all;
+}

@@ -1,0 +1,216 @@
+.comparison-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 1.5rem 1.5rem 0;
+    background-color: var(--white);
+    border-radius: 0.5rem;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.comparison-side {
+    flex: 1;
+    min-width: 200px;
+    padding: 1rem;
+    background-color: var(--bg-color);
+    border-radius: 0.375rem;
+}
+
+.comparison-side h4 {
+    margin: 0 0 0.75rem 0;
+    color: var(--text-light);
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.comparison-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    color: white;
+    font-size: 1.25rem;
+}
+
+.detail-group {
+    margin-bottom: 1rem;
+}
+
+.detail-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-light);
+    font-size: 0.875rem;
+}
+
+.detail-value {
+    padding: 0.75rem;
+    background-color: var(--bg-color);
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    color: var(--text-color);
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--text-light);
+    cursor: pointer;
+    padding: 0.25rem;
+    font-size: 0.875rem;
+    z-index: 1;
+}
+
+.password-toggle:hover {
+    color: var(--text-color);
+}
+
+.hidden-password {
+    letter-spacing: 0.25em;
+}
+
+.form-section.completed .button-container {
+    display: none;
+}
+
+.confirm-button {
+    background-color: var(--error-color);
+    color: var(--white);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.confirm-button:hover {
+    background-color: #dc2626;
+}
+
+@media (max-width: 707px) {
+    .comparison-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .comparison-side {
+        margin: 0 0 0 0;
+        padding: 1rem 0 0 0;
+    }
+
+    /* UTTER WOKE NONSENSE */
+    .comparison-side h3, .comparison-side label, .comparison-side .detail-group div {
+        padding: 0 1rem 0 1rem;
+    }
+
+    .comparison-arrow {
+        transform: rotate(90deg);
+        margin: 0.5rem 0;
+    }
+}
+
+.warning-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.warning-dialog {
+    background-color: var(--white);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.warning-dialog h3 {
+    color: var(--error-color);
+    margin: 0 0 1rem 0;
+    font-size: 1.25rem;
+}
+
+.warning-content {
+    margin-bottom: 1.5rem;
+}
+
+.warning-content p {
+    margin: 0 0 1rem 0;
+    color: var(--text-color);
+}
+
+.warning-content ul {
+    margin: 0 0 1rem 0;
+    padding-left: 1.5rem;
+}
+
+.warning-content li {
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.warning-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.pds-verification {
+    margin: 1rem 0;
+}
+
+.pds-verification input {
+    width: 98%;
+    padding: 0.75rem 0 0.75rem 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    color: var(--text-color);
+    background-color: var(--white);
+    transition: border-color 0.2s;
+}
+
+.pds-verification input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.pds-verification input.error {
+    border-color: var(--error-color);
+}
+
+.error-message {
+    color: var(--error-color);
+    font-size: 0.875rem;
+    margin: 0.5rem 0 0 0;
+}
+
+.warning-buttons button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}   

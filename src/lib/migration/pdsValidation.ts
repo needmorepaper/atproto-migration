@@ -165,9 +165,9 @@ export const validatePDS = async (pdsUrl: string, agent: AtpAgent): Promise<Vali
     const hostname = url.hostname;
 
     // Check for Bluesky domains
-    if (hostname.endsWith('.bsky.network') ||
-      hostname === 'bsky.social' ||
-      hostname === 'bsky.app') {
+    if (hostname.endsWith('bsky.network') ||
+      hostname.endsWith('bsky.social') ||
+      hostname.endsWith('bsky.app')) {
       return {
         isValid: false,
         error: 'You cannot migrate to Bluesky data servers at this time.'

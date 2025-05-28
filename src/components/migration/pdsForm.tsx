@@ -124,8 +124,8 @@ export default function PdsForm({ agent, onSubmit, onBack }: PdsFormProps) {
         setIsValidatingInviteCode(false);
     }, []);
 
-    const debouncedValidatePds = useDebounce(validatePdsInput, 1000);
-    const debouncedValidateInviteCode = useDebounce(validateInviteCodeInput, 1000);
+    const debouncedValidatePds = useDebounce(validatePdsInput, 500);
+    const debouncedValidateInviteCode = useDebounce(validateInviteCodeInput, 500);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

@@ -136,7 +136,7 @@ export default function Login({ onLogin }: LoginProps) {
         <div className="login-card">
           <h2 className="login-title">Sign in to your account</h2>
           <div className="warning-message">
-            ⚠️ Please use your main account password, not an app password. All operations are performed locally in your browser.
+            ⚠️ Please use your main account password, not an app password. You will also have to temporarily disable 2FA. All operations are performed locally in your browser.
           </div>
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="form-group">

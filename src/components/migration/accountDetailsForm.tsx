@@ -37,9 +37,9 @@ export default function AccountDetailsForm({
         setIsUsingDefaultDomain(isUsingDefaultDomain);
         if (isUsingDefaultDomain) {
             // Set initial handle value from current handle
-            setHandle(currentHandle.slice(0, currentHandle.indexOf('.')));
+            setHandle(customHandle);
         } else {
-            setHandle(customHandle || 'example');
+            setHandle(customHandle);
         }
     }, [currentHandle, serverDescription]);
 
@@ -53,6 +53,10 @@ export default function AccountDetailsForm({
     };
 
     const validateHandleInput = (handle: string) => {
+        if (!isUsingDefaultDomain) {
+            return '';
+        }
+
         if (handle.length < 3) {
             return 'Handle must be at least 3 characters long';
         }
@@ -84,21 +88,27 @@ export default function AccountDetailsForm({
         return () => clearTimeout(timeoutId);
     }, []);
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        
-        // Validate all fields
+    const validateAllFields = () => {
+        // Run all validations immediately
         const handleValidationError = validateHandleInput(handle);
         const emailValidationError = !validateEmail(email) ? 'Please enter a valid email address' : '';
         const passwordValidationError = !validatePassword(password) ? 'Password must be at least 8 characters long' : '';
         
+        // Update all error states
         setHandleError(handleValidationError);
         setEmailError(emailValidationError);
         setPasswordError(passwordValidationError);
         
-        // Only submit if all validations pass
-        if (!handleValidationError && !emailValidationError && !passwordValidationError) {
-            onSubmit(handle, email, password);
+        // Return true if all validations pass
+        return !handleValidationError && !emailValidationError && !passwordValidationError;
+    };
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        
+        // Validate all fields and only proceed if all validations pass
+        if (validateAllFields()) {
+            onSubmit((handle + newFirstAvailableDomain), email, password);
         }
     };
 
@@ -134,7 +144,6 @@ export default function AccountDetailsForm({
                             />
                             <span className="handle-domain">{newFirstAvailableDomain}</span>
                         </div>
-                        {handleError && <div className="error-message">{handleError}</div>}
                         {handleError && <div className="error-message">{handleError}</div>}
                     </div>
                 </div>
