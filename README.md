@@ -16,4 +16,6 @@ npm run dev
 npm run build
 ```
 
+if you type ```ANALYZE=1``` you will receive a bundle analysis, useful for optimizing
+
 open the `dist` directory and you're set

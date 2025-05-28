@@ -40,7 +40,7 @@ function App() {
     // Save session to localStorage
     localStorage.setItem(SESSION_KEY, JSON.stringify({
       session: newAgent.session,
-      service: newAgent.service.toString(),
+      service: newAgent.serviceUrl,
       timestamp: Date.now()
     }));
   };

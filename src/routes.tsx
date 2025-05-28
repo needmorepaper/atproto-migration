@@ -24,6 +24,7 @@ export function AppRoutes({ agent, onLogout, handleLogin }: {
           await agent.getProfile({ actor: agent.session?.handle || '' });
         } catch (err) {
           // If the API call fails, the session is likely invalid
+          console.error('Session check failed: ', err);
           onLogout();
           alert('Your session has expired. Please log in again.');
         }
