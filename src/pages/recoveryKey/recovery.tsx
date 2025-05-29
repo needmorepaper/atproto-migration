@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { AtpAgent } from '@atproto/api';
-import Footer from '../../components/common/footer';
-import Header from '../../components/common/header';
+import Footer from '../../components/common/Footer';
+import Header from '../../components/common/Header';
 
 interface RecoveryKeyProps {
   agent: AtpAgent;

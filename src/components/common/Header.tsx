@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { AtpAgent } from '@atproto/api';
-import { useAvatar } from '../../contexts/avatarContext';
+import { useAvatar } from '../../contexts/AvatarContext';
 
 interface HeaderProps {
   agent: AtpAgent;

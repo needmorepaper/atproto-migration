@@ -1,14 +1,15 @@
 import { useEffect } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AtpAgent } from '@atproto/api'
-import NetworkWarning from './components/common/networkWarning'
-import Login from './pages/login'
-import Actions from './pages/actions'
-import Migration from './pages/migration/migration'
-import MigrationForms from './pages/migration/migrationForms'
-import RecoveryKey from './pages/recoveryKey/recovery'
-import RecoveryKeyProcess from './pages/recoveryKey/recoveryKeyProcess'
-import ErrorPage from './pages/error'
+
+import NetworkWarning from './components/common/NetworkWarning'
+import Login from './pages/Login'
+import Actions from './pages/Actions'
+import Migration from './pages/migration/Migration'
+import MigrationForms from './pages/migration/MigrationForms'
+import RecoveryKey from './pages/recoveryKey/Recovery'
+import RecoveryKeyProcess from './pages/recoveryKey/RecoveryKeyProcess'
+import ErrorPage from './pages/Error'
 
 export function AppRoutes({ agent, onLogout, handleLogin }: { 
   agent: AtpAgent | null;

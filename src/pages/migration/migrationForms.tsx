@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import { AtpAgent } from '@atproto/api';
 import { useState, useRef, useEffect } from 'react';
-import Header from '../../components/common/header';
-import Footer from '../../components/common/footer';
-import PdsForm from '../../components/migration/pdsForm';
-import AccountDetailsForm from '../../components/migration/accountDetailsForm';
-import ConfirmationStep from '../../components/migration/confirmationStep';
+import Header from '../../components/common/Header';
+import Footer from '../../components/common/Footer';
+import PdsForm from '../../components/migration/PdsForm';
+import AccountDetailsForm from '../../components/migration/AccountDetailsForm';
+import ConfirmationStep from '../../components/migration/ConfirmationStep';
 import { ServerDescription } from '../../lib/migration/serverDescription';
 import { getServerDescription } from '../../lib/migration/pdsValidation';
 

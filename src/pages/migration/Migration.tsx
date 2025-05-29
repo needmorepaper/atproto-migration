@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { AtpAgent } from '@atproto/api';
-import Header from '../../components/common/header';
-import Footer from '../../components/common/footer';
+import Header from '../../components/common/Header';
+import Footer from '../../components/common/Footer';
 
 interface MigrationProps {
   agent: AtpAgent;
