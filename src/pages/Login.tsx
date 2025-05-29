@@ -15,14 +15,16 @@ interface DidDocument {
   }>;
 }
 
-type LoginStep = 'idle' | 'resolving-handle' | 'resolving-did' | 'connecting-pds' | 'authenticating' | 'success';
+type LoginStep = 'idle' | 'resolving-handle' | 'resolving-did' | 'connecting-pds' | 'authenticating' | '2fa-required' | 'success';
 
 export default function Login({ onLogin }: LoginProps) {
   const [handle, setHandle] = useState('');
   const [password, setPassword] = useState('');
+  const [twoFactorCode, setTwoFactorCode] = useState('');
   const [error, setError] = useState('');
   const [appPasswordAttempts, setAppPasswordAttempts] = useState(0);
   const [loginStep, setLoginStep] = useState<LoginStep>('idle');
+  const [agent, setAgent] = useState<AtpAgent | null>(null);
   const navigate = useNavigate();
 
   const isAppPassword = (password: string) => {
@@ -40,6 +42,8 @@ export default function Login({ onLogin }: LoginProps) {
         return 'Connecting to your Personal Data Server...';
       case 'authenticating':
         return 'Authenticating your credentials...';
+      case '2fa-required':
+        return 'Please enter your 2FA code';
       case 'success':
         return 'Login successful! Redirecting...';
       default:
@@ -50,6 +54,28 @@ export default function Login({ onLogin }: LoginProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+
+    // If we're in 2FA step, handle that separately
+    if (loginStep === '2fa-required') {
+      if (!agent) {
+        setError('Session expired. Please try logging in again.');
+        setLoginStep('idle');
+        return;
+      }
+
+      try {
+        setLoginStep('authenticating');
+        await agent.login({ identifier: handle, password, authFactorToken: twoFactorCode });
+        setLoginStep('success');
+        onLogin(agent);
+        navigate('/actions');
+      } catch (err) {
+        setError(err instanceof Error ? err.message : '2FA verification failed');
+        setLoginStep('2fa-required');
+      }
+      return;
+    }
+
     setLoginStep('resolving-handle');
 
     // app password check and debug method
@@ -115,14 +141,25 @@ export default function Login({ onLogin }: LoginProps) {
       setLoginStep('connecting-pds');
       const pds = ((didDocResponse.data as unknown) as DidDocument).service.find((s) => s.id === '#atproto_pds')?.serviceEndpoint || 'https://bsky.social';
 
-      const agent = new AtpAgent({ service: pds });
+      const newAgent = new AtpAgent({ service: pds });
+      setAgent(newAgent);
       
       setLoginStep('authenticating');
-      await agent.login({ identifier: handle, password });
-      
-      setLoginStep('success');
-      onLogin(agent);
-      navigate('/actions');
+      try {
+        await newAgent.login({ identifier: handle, password });
+        setLoginStep('success');
+        onLogin(newAgent);
+        navigate('/actions');
+      } catch (err) {
+        if (err instanceof Error && (
+          err.message.includes('AuthFactorTokenRequired') || 
+          err.message.includes('A sign in code has been sent to your email address')
+        )) {
+          setLoginStep('2fa-required');
+          return;
+        }
+        throw err;
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed');
       setLoginStep('idle');
@@ -136,7 +173,7 @@ export default function Login({ onLogin }: LoginProps) {
         <div className="login-card">
           <h2 className="login-title">Sign in to your account</h2>
           <div className="warning-message">
-            ⚠️ Please use your main account password, not an app password. You will also have to temporarily disable 2FA. All operations are performed locally in your browser.
+            ⚠️ Please use your main account password, not an app password. All operations are performed locally in your browser.
           </div>
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="form-group">
@@ -163,7 +200,7 @@ export default function Login({ onLogin }: LoginProps) {
             </div>
 
             {error && <div className="error-message">{error}</div>}
-            {loginStep !== 'idle' && (
+            {loginStep !== 'idle' && loginStep !== '2fa-required' && (
               <div className="loading-message">
                 {getStepMessage(loginStep)}
               </div>
@@ -179,6 +216,50 @@ export default function Login({ onLogin }: LoginProps) {
           </form>
         </div>
       </div>
+
+      {/* 2FA Modal */}
+      {loginStep === '2fa-required' && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Two-Factor Authentication Required</h2>
+            <p>A sign in code has been sent to your email address.</p>
+            <form onSubmit={handleSubmit} className="two-factor-form">
+              <div className="form-group">
+                <input
+                  type="text"
+                  required
+                  className="form-input"
+                  placeholder="Enter 2FA code"
+                  value={twoFactorCode}
+                  onChange={(e) => setTwoFactorCode(e.target.value)}
+                  autoFocus
+                />
+              </div>
+              {error && <div className="error-message">{error}</div>}
+              <div className="button-group">
+                <button 
+                  type="button" 
+                  className="back-button"
+                  onClick={() => {
+                    setLoginStep('idle');
+                    setError('');
+                    setTwoFactorCode('');
+                  }}
+                >
+                  Cancel
+                </button>
+                <button 
+                  type="submit" 
+                  className="submit-button"
+                >
+                  Verify
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       <Footer />
     </div>
   );
