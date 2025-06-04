@@ -7,6 +7,7 @@ import Login from './pages/Login'
 import Actions from './pages/Actions'
 import Migration from './pages/migration/Migration'
 import MigrationForms from './pages/migration/MigrationForms'
+import MigrationProcess from './pages/migration/MigrationProcess'
 import RecoveryKey from './pages/recoveryKey/Recovery'
 import RecoveryKeyProcess from './pages/recoveryKey/RecoveryKeyProcess'
 import ErrorPage from './pages/Error'
@@ -95,6 +96,16 @@ export function AppRoutes({ agent, onLogout, handleLogin }: {
           element={
             agent ? (
               <RecoveryKeyProcess agent={agent} onLogout={onLogout} />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
+        />
+        <Route
+          path="/migration/process"
+          element={
+            agent ? (
+              <MigrationProcess agent={agent} onLogout={onLogout} />
             ) : (
               <Navigate to="/" replace />
             )

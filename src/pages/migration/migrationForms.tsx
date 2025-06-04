@@ -8,6 +8,7 @@ import AccountDetailsForm from '../../components/migration/AccountDetailsForm';
 import ConfirmationStep from '../../components/migration/ConfirmationStep';
 import { ServerDescription } from '../../lib/migration/serverDescription';
 import { getServerDescription } from '../../lib/migration/pdsValidation';
+import { MigrationData } from '../../lib/migration/migrationData';
 
 interface MigrationFormsProps {
     agent: AtpAgent;
@@ -73,8 +74,15 @@ export default function MigrationForms({ agent, onLogout }: MigrationFormsProps)
     };
 
     const handleConfirm = () => {
-        // TODO: Handle the actual migration process
-        console.log('Starting migration with:', { ...pdsDetails, ...accountDetails });
+        if (pdsDetails && accountDetails) {
+            const migrationData = new MigrationData(agent.serviceUrl.hostname, pdsDetails.pds, pdsDetails.inviteCode, accountDetails.handle, accountDetails.email, accountDetails.password);
+            console.log('Migration data:', migrationData);
+            localStorage.setItem('migrationData', JSON.stringify(migrationData));
+        } else {
+            console.error('Migration data is not complete');
+            return;
+        }
+        navigate('/migration/process');
     };
 
     return (
